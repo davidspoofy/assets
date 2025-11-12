@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Async Fetch</title>
+</head>
+<body>
+<button onclick="fetchAndRun('https://raw.githubusercontent.com/ejb15/ejb1.github.io/main/script.js')">Fetch & Run</button>
+<script>
+function fetchAndRun(url) {
+  fetch(url)
+    .then(r => r.text())
+    .then(code => {
+      const newTab = window.open('about:blank', '_blank');
+      if (newTab) {
+        newTab.document.write(`
+          <html>
+            <head><title>Executed Code</title></head>
+            <body>
+              <h2>Code Executed</h2>
+              <button onclick="${code}">Run Fetched Code</button>
+              <button onclick="alert('Button 2')">Button 2</button>
+              <script>${code}<\/script>
+            </body>
+          </html>
+        `);
+        newTab.document.close();
+      } else {
+        alert('Popup blocked!');
+      }
+    })
+    .catch(err => console.log(err));
+}
+</script>
+</body>
+</html>
